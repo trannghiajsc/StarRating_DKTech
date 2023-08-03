@@ -79,7 +79,7 @@ public final class StarRating: NSObject, UITextViewDelegate, MFMailComposeViewCo
         self.title.numberOfLines = 0 // Cho phép hiển thị nhiều dòng nếu cần
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.16
-        self.title.attributedText = NSMutableAttributedString(string: "Do you like our app?", attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        self.title.attributedText = NSMutableAttributedString(string: title, attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
         alertView.addSubview(self.title)
         self.title.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -171,6 +171,7 @@ public final class StarRating: NSObject, UITextViewDelegate, MFMailComposeViewCo
         self.submit.addTarget(self, action: #selector(submitAction), for: .touchUpInside)
         
     }
+    
     @objc private func remindLater() {
         if darkBackground != nil {
                 darkBackground.removeFromSuperview()
@@ -300,6 +301,7 @@ public final class StarRating: NSObject, UITextViewDelegate, MFMailComposeViewCo
             }
         }
     }
+    
     @objc private func dismissKeyboard() {
         self.messageView?.resignFirstResponder()
     }
@@ -313,6 +315,7 @@ public final class StarRating: NSObject, UITextViewDelegate, MFMailComposeViewCo
     public func textViewDidChange(_ textView: UITextView) {
         updateCharCount()
     }
+    
     func updateCharCount() {
         let text = messageView?.text ?? ""
         let charCount = text.count
@@ -344,6 +347,7 @@ public final class StarRating: NSObject, UITextViewDelegate, MFMailComposeViewCo
         sendEmail()
         
     }
+    
     func sendEmail() {
             if MFMailComposeViewController.canSendMail() {
                 let mailComposeVC = MFMailComposeViewController()
@@ -357,6 +361,7 @@ public final class StarRating: NSObject, UITextViewDelegate, MFMailComposeViewCo
                 print("Mail không được cấu hình trên thiết bị này.")
             }
     }
+    
     public func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
             controller.dismiss(animated: true, completion: nil)
             // Xử lý kết quả của việc gửi email (nếu cần)
