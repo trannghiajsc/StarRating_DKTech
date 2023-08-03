@@ -35,16 +35,17 @@ public final class StarRating: NSObject, UITextViewDelegate, MFMailComposeViewCo
     private var placeHolderTextView: String?
     private var vc: UIViewController?
     private var emailAddress: String?
+    private var yourAppId: String?
     private var dismissKeyboardClosure: (() -> Void)?
     
     private override init(){}
     
-    public func addRating(vc: UIViewController?, title: String?, contentLow: String?, contentMedium: String?, contentHigh: String?, remind: String?, submit: String?, icon: UIImageView?, nameApp: String?, cancelText: String?, sendText: String?, placeHolderTextView: String?, emailAddress: String?) {
+    public func addRating(vc: UIViewController?, title: String?, contentLow: String?, contentMedium: String?, contentHigh: String?, remind: String?, submit: String?, icon: UIImageView?, nameApp: String?, cancelText: String?, sendText: String?, placeHolderTextView: String?, emailAddress: String?, yourAppId: String?) {
         guard let vc = vc else {
             print("View Controller doesn't exist")
             return
         }
-        guard let title = title, let remind = remind, let submit = submit, let contentLow = contentLow, let contentMedium = contentMedium, let contentHigh = contentHigh, let icon = icon, let nameApp = nameApp, let cancelText = cancelText, let sendText = sendText, let placeHolderTextView = placeHolderTextView, let emailAddress = emailAddress else {
+        guard let title = title, let remind = remind, let submit = submit, let contentLow = contentLow, let contentMedium = contentMedium, let contentHigh = contentHigh, let icon = icon, let nameApp = nameApp, let cancelText = cancelText, let sendText = sendText, let placeHolderTextView = placeHolderTextView, let emailAddress = emailAddress, let yourAppId = yourAppId else {
             print("Please fill all fields")
             return
             }
@@ -52,6 +53,7 @@ public final class StarRating: NSObject, UITextViewDelegate, MFMailComposeViewCo
         self.cancelText = cancelText
         self.placeHolderTextView = placeHolderTextView
         self.emailAddress = emailAddress
+        self.yourAppId = yourAppId
         darkBackground = UIView(frame: CGRect(x: 0, y: 0, width: vc.view.frame.width, height: vc.view.frame.height))
         darkBackground.backgroundColor = .black
         darkBackground.alpha = 0.9
@@ -294,7 +296,11 @@ public final class StarRating: NSObject, UITextViewDelegate, MFMailComposeViewCo
                             SKStoreReviewController.requestReview()
                         } else {
                             // Xử lý logic khi không hỗ trợ trên phiên bản cũ hơn của iOS (thường mở trang App Store để người dùng tự đánh giá)
-                            if let url = URL(string: "itms-apps://itunes.apple.com/app/your_app_id?action=write-review") {
+                            guard let yourAppId = self.yourAppId else {
+                                print("Your app id is not available")
+                                return
+                            }
+                            if let url = URL(string: "itms-apps://itunes.apple.com/app/\(yourAppId)?action=write-review") {
                                 UIApplication.shared.openURL(url)
                             }
                 }
